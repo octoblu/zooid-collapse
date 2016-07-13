@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import CollapseHeader from '../CollapseHeader'
+
 const propTypes = {
   children: PropTypes.node,
   expanded: PropTypes.bool,
@@ -10,36 +11,16 @@ const defaultProps = {
   expanded: false,
 }
 
-class Collapse extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      isExpanded: null,
-    }
-  }
-
-  componentWillMount() {
-    this.setState({
-      isExpanded: this.props.expanded,
-    })
-  }
-
-  toggleExpandedState() {
-    this.setState({
-      isExpanded: !this.state.isExpanded,
-    })
-  }
-
-  render() {
-    const { children } = this.props
-
-    return (
-      <div>
-        <div className="Collapse-body">{children}</div>
-      </div>
-    )
-  }
+const Collapse = ({ children, expanded, header }) => {
+  let body = null
+  if (expanded) body = <div>{children}</div>
+  
+  return (
+    <div>
+      <CollapseHeader header={header} />
+      {body}
+    </div>
+  )
 }
 
 Collapse.propTypes    = propTypes

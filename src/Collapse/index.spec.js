@@ -12,45 +12,42 @@ chai.use(chaiEnzyme())
 chai.use(sinonChai)
 
 describe('<Collapse />', () => {
-  it('should set expanded prop to false by default', () => {
-    const sut = mount(<Collapse />)
-    expect(sut).to.have.prop('expanded', false)
-  })
+  describe('when passed header as prop', () => {
+    it('should render header', () => {
+      const sut = shallow(
+        <Collapse header="Addicted To Vi" />
+      )
 
-  it('should render children when passed in as prop', () => {
-    const sut = shallow(
-      <Collapse>
-        <p>Something Fancy!</p>
-      </Collapse>
-    )
-
-    expect(sut.find('.Collapse-body')).to.contain('Something Fancy!')
-  })
-
-  it('should render component')
-  describe('-> componentWillMount()', () => {
-    let sut
-
-    it('should map expanded prop to isExpanded state', () => {
-      sut = mount(<Collapse expanded />)
-      expect(sut).to.have.state('isExpanded', true)
-
-      sut = mount(<Collapse />)
-      expect(sut).to.have.state('isExpanded', false)
+      expect(sut).to.contain(<CollapseHeader header="Addicted To Vi" />)
     })
   })
 
-  describe('-> toggleExpandedState()', () => {
-    it('should toggle isExpanded state', () => {
-      const sut = mount(<Collapse expanded />)
-      expect(sut).to.have.state('isExpanded', true)
-
-      sut.instance().toggleExpandedState()
-      expect(sut).to.have.state('isExpanded', false)
-
-      sut.instance().toggleExpandedState()
-      expect(sut).to.have.state('isExpanded', true)
+  describe('when expanded prop is truthy', () => {
+    it('should not render children', () => {
+      const sut = shallow(
+        <Collapse expanded>
+          <p>Might as well face it, You're addicted to vi!</p>
+        </Collapse>
+      )
+      expect(sut).to.contain(<p>Might as well face it, You're addicted to vi!</p>)
     })
   })
 
+  describe('when expanded prop is falsy', () => {
+    it('should not render children', () => {
+      const sut = shallow(
+        <Collapse>
+          <p>Might as well face it, You're addicted to vi!</p>
+        </Collapse>
+      )
+      expect(sut).to.not.contain(<p>Might as well face it, You're addicted to vi!</p>)
+    })
+  })
+
+  describe('when expanded prop is not set', () => {
+    it('should set expanded prop to false by default', () => {
+      const sut = mount(<Collapse />)
+      expect(sut).to.have.prop('expanded', false)
+    })
+  })
 })
